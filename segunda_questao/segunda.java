@@ -1,26 +1,22 @@
 package segunda_questao;
 
 import java.util.Scanner;
-/*
-Crie a classe principal Main que deverá instanciar dois objetos da classe Account, 
-cada um utilizando um tipo de construtor diferente da classe Password. 
-Em seguida, mostre as senhas das duas contas, modifique a senha alfanumérica da primeira conta e a numérica da segunda 
-e mostre novamente as duas senhas, bem como o identificador e a agência da primeira conta. 
-Por fim, modifique o número de identificador e a agência da segunda conta.
-*/
+
 public class segunda {
     public static void main(String[] args) {
-        Account p = new Account("Id233","ag123", 0, "1234a","");
-        Account c = new Account("Id234","ag123", 1000000, "a12345","9234");
-        System.out.println("Senha Alfa: " + p.getSenha().getAlfa() + " Senha Number: " + p.getSenha().getNumber());
+        Account p = new Account("Id233","ag123", 0, new Password("",""));
+       
+        Account c = new Account("Id234","ag123", 1000000, new Password("ABC12345","12345"));
         
-        System.out.println("Senha Alfa: " + c.getSenha().getAlfa() + " Senha Number: " + c.getSenha().getNumber());
+        System.out.println("Senha Alfa: " + p.getSenha().getAlfa() + " Senha Number: " + p.getSenha().getNum());
         
-        p.setSenhaAlfa("123B");
-        c.setSenhaNum("123456");
-        System.out.println("Senha Alfa: " + p.getSenha().getAlfa() + " Senha Number: " + p.getSenha().getNumber());
+        System.out.println("Senha Alfa: " + c.getSenha().getAlfa() + " Senha Number: " + c.getSenha().getNum());
         
-        System.out.println("Senha Alfa: " + c.getSenha().getAlfa() + " Senha Number: " + c.getSenha().getNumber());
+        p.setSenha(new Password("1234b",""));;
+        c.setSenha(new Password("","123456"));
+        System.out.println("Senha Alfa: " + p.getSenha().getAlfa() + " Senha Number: " + p.getSenha().getNum());
+        
+        System.out.println("Senha Alfa: " + c.getSenha().getAlfa() + " Senha Number: " + c.getSenha().getNum());
         
         p.setId("Id333");
         c.setId("Id334");
@@ -29,21 +25,78 @@ public class segunda {
         System.out.println("Id: " + p.getId() + " Agencia: " + p.getAgencia());
         System.out.println("Id: " + c.getId() + " Agencia: " + c.getAgencia());
         
-
-        
     }
 }
 
-class Password {
-    Password(){}
+class Account{
+    private String id;
+    private String agencia;
+    private float saldo;
+    private Password senha; 
+    Scanner sc = new Scanner(System.in);
 
-    Password(String alfa, String number){
-        this.alfa = isAlfa(alfa);
-        this.number = isNumber(number);
+    Account(String id, String agencia, float saldo, Password senha){
+        this.id = testId(id);
+        this.agencia = agencia;
+        this.saldo = saldo;
+        this.senha = new Password(senha.getAlfa(), senha.getNum());   
     }
+
+    public String testId(String id){
+        while(true){
+            if(id.length() <= 10){                
+                this.id = id;
+                return id;
+            }
+            else{
+                System.out.print("A id Ultrapassou o limite de char, redigite: ");
+                id = sc.nextLine();
+            }
+        }
+    }
+
+    public String getAgencia() {
+        return agencia;
+    }
+    public void setAgencia(String agencia) {
+        this.agencia = agencia;
+    }
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+    public float getSaldo() {
+        return saldo;
+    }
+    public void setSaldo(float saldo) {
+        this.saldo = saldo;
+    }
+    public Password getSenha(){
+        return this.senha;
+    }
+    public void setSenha(Password senha) {
+        this.senha = senha;
+    }
+}
+
+class Password{
     private String alfa;
-    private String number;
+    private String num;
     Scanner sc = new Scanner(System.in); 
+
+    //constructor
+    Password(){
+        this.alfa = "123abc";
+        this.num = "123";
+    }
+
+
+    Password(String alfa , String num){
+        this.alfa = isAlfa(alfa);
+        this.num = isNumber(num);
+    }
 
     public String isAlfa(String alfa){
         if(alfa == "" || alfa == " ")
@@ -88,80 +141,16 @@ class Password {
         }
     }
 
-    public void setAlfa(String alfa) {
-     this.alfa = isAlfa(alfa);
-    }
-    
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
     public String getAlfa() {
-        return alfa;
+        return this.alfa;
     }
-
-    public String getNumber() {
-        return number;
+    public void setAlfa(String alfa) {
+        this.alfa = alfa;
     }
-}
-
-class Account{
-    //max lenght of id is 10
-    private String id;
-    private String agencia;
-    private float saldo;
-    private Password senha; 
-    Scanner sc = new Scanner(System.in); 
-
-    Account(String id, String agencia, float saldo, String senhaAlfa, String senhaNum){
-        this.id = testId(id);
-        this.agencia = agencia;
-        this.saldo = saldo;
-        this.senha = new Password(senhaAlfa, senhaNum);
+    public String getNum() {
+        return this.num;
     }
-    public void setAgencia(String agencia) {
-        this.agencia = agencia;
+    public void setNum(String num) {
+        this.num = num;
     }
-
-    public String testId(String id){
-        while(true){
-            if(id.length() <= 10){                
-                this.id = id;
-                return id;
-            }
-            else{
-                System.out.print("A id Ultrapassou o limite de char, redigite: ");
-                id = sc.nextLine();
-            }
-        }
-    }
-
-    public void setId(String id) {
-        this.id = testId(id);
-    }
-
-    public void setSaldo(float saldo) {
-        this.saldo = saldo;
-    }
-    public void setSenhaAlfa(String senha) {
-        this.senha.setAlfa(senha);
-    }
-
-    public void setSenhaNum(String senha) {
-        this.senha.setNumber(senha);
-    }
-
-    public String getAgencia() {
-        return agencia;
-    }
-    public String getId() {
-        return id;
-    }
-    public float getSaldo() {
-        return saldo;
-    }
-    public Password getSenha() {
-        return senha;
-    }
-
 }
