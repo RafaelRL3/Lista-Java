@@ -1,3 +1,5 @@
+package primeira_questao;
+
 public class primeira {
     public static void main(String[] args) {
         Text p = new Text("Ola 123");
