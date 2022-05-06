@@ -1,31 +1,19 @@
-package segunda_questao;
-
 import java.util.Scanner;
 
-public class segunda {
+public class terceira {
     public static void main(String[] args) {
-        Account p = new Account("Id233","ag123", 0, new Password("",""));
-       
-        Account c = new Account("Id234","ag123", 1000000, new Password("ABC12345","12345"));
+        SavingAccount a = new SavingAccount("Id234","ag123", 1000000, new Password("ABC12345","12345"));
+        SavingAccount b = new SavingAccount("Id235","ag124", 10000, new Password("ABC12345","12345"));
         
-        System.out.println("Senha Alfa: " + p.getSenha().getAlfa() + " Senha Number: " + p.getSenha().getNum());
-        
-        System.out.println("Senha Alfa: " + c.getSenha().getAlfa() + " Senha Number: " + c.getSenha().getNum());
-        
-        p.setSenha(new Password("1234b",""));;
-        c.setSenha(new Password("","123456"));
-        System.out.println("Senha Alfa: " + p.getSenha().getAlfa() + " Senha Number: " + p.getSenha().getNum());
-        
-        System.out.println("Senha Alfa: " + c.getSenha().getAlfa() + " Senha Number: " + c.getSenha().getNum());
-        
-        p.setId("Id333");
-        c.setId("Id334");
-        p.setAgencia("ag223");
-        c.setAgencia("ag224");
-        System.out.println("Id: " + p.getId() + " Agencia: " + p.getAgencia());
-        System.out.println("Id: " + c.getId() + " Agencia: " + c.getAgencia());
-        
-    }
+        a.debit(3000);
+        System.out.println("O saldo de "+ a.getAgencia() + " eh: " + a.getSaldo());
+        a.credit(3000);
+        System.out.println("O saldo de "+ a.getAgencia() + " eh: " + a.getSaldo());
+        a.renderJuros();
+        a.renderJuros(50);
+        System.out.println("O saldo de "+ a.getAgencia() + " eh: " + a.getSaldo());
+    }    
+    
 }
 
 class Account{
@@ -55,6 +43,16 @@ class Account{
         }
     }
 
+    public float debit(float value){
+        this.saldo = this.saldo - value;
+        return this.saldo;
+    }
+
+    public float credit(float value){
+        this.saldo += value;
+        return this.saldo;
+    }
+
     public String getAgencia() {
         return agencia;
     }
@@ -80,6 +78,7 @@ class Account{
         this.senha = senha;
     }
 }
+
 
 class Password{
     private String alfa;
@@ -153,4 +152,23 @@ class Password{
     public void setNum(String num) {
         this.num = num;
     }
+}
+
+class SavingAccount extends Account{
+    static float taxa = 0.03f;
+    public SavingAccount (String id, String agencia, float saldo, Password senha){
+        super(id,agencia,saldo,senha);
+    }
+
+    public void renderJuros(float taxa){
+        setSaldo(getSaldo()*taxa);
+    }
+
+    public void renderJuros(){
+        float juros = getSaldo() * taxa;
+        setSaldo(juros);
+    }
+
+   
+
 }
